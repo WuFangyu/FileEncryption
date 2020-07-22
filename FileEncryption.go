@@ -72,7 +72,7 @@ func Decrypter(path string) (err error) {
 	}
 	inFile.Close()
 
-	os.Remove(path)
+	// os.Remove(path)
 	return
 }
 
@@ -106,7 +106,7 @@ func Encrypter(path string) (err error) {
 	}
 	inFile.Close()
 	outFile.Close()
-	os.Remove(path)
+	// os.Remove(path)
 	return nil
 }
 

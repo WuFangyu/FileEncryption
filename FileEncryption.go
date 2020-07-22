@@ -90,7 +90,7 @@ func Encrypter(path string) (err error) {
 
 	obfuscatePath := filenameObfuscator(path)
 	outFile, err := os.OpenFile(obfuscatePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
-	fmt.Println(outFile.Name())
+	// fmt.Println(outFile.Name())
 
 	if err != nil {
 		fmt.Println(err)

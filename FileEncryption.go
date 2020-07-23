@@ -9,6 +9,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"path/filepath"
 )
 
 var plaintext []byte
@@ -55,7 +56,9 @@ func Decrypter(path string) (err error) {
 		return
 	}
 
-	deobfPath := filenameDeobfuscator(path)
+	// deobfPath := filenameDeobfuscator(path)
+	deobPath := "/tmp/" +  filepath.Base(path)
+	
 	outFile, err := os.OpenFile(deobfPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {
 		return
@@ -88,7 +91,7 @@ func Encrypter(path string) (err error) {
 		return
 	}
 
-	obfuscatePath := filenameObfuscator(path)
+	obfuscatePath := "/tmp/" +  filepath.Base(path)
 	outFile, err := os.OpenFile(obfuscatePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
 	// fmt.Println(outFile.Name())
 

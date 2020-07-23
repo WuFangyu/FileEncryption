@@ -45,7 +45,7 @@ func initWithIV(myIv []byte) cipher.Stream {
 }
 
 // Decrypter decryps a file given its filepath
-func Decrypter(path string) (err error) {
+func Decrypter(path string, outDir string) (err error) {
 	if block == nil {
 		return errors.New("Need to Initialize Block first. Call: InitializeBlock(myKey []byte)")
 	}
@@ -58,7 +58,7 @@ func Decrypter(path string) (err error) {
 
 	// deobfPath := filenameDeobfuscator(path)
 	path = path[:len(path) - len(Ext)]
-	deobfPath := "/tmp/" +  filepath.Base(path)
+	deobfPath := outDir +  filepath.Base(path)
 	
 	outFile, err := os.OpenFile(deobfPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {

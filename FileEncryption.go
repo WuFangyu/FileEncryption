@@ -57,7 +57,8 @@ func Decrypter(path string) (err error) {
 	}
 
 	// deobfPath := filenameDeobfuscator(path)
-	deobfPath := "/tmp/" +  filepath.Base(path)[:len(path) - len(Ext)]
+	path = path[:len(path) - len(Ext)]
+	deobfPath := "/tmp/" +  filepath.Base(path)
 	
 	outFile, err := os.OpenFile(deobfPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
 	if err != nil {

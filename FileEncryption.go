@@ -10,6 +10,7 @@ import (
 	"os"
 	"strings"
 	"path/filepath"
+	bar "github.com/schollz/progressbar"
 )
 
 var plaintext []byte
@@ -49,6 +50,11 @@ func Decrypter(path string, outDir string) (err error) {
 	if block == nil {
 		return errors.New("Need to Initialize Block first. Call: InitializeBlock(myKey []byte)")
 	}
+	
+	progress := bar.DefaultBytes(
+		-1,
+		"decrypting",
+	)
 
 	inFile, err := os.Open(path)
 	if err != nil {
@@ -71,7 +77,7 @@ func Decrypter(path string, outDir string) (err error) {
 	inFile.Seek(aes.BlockSize, 0) // Read after the IV
 
 	reader := &cipher.StreamReader{S: stream, R: inFile}
-	if _, err = io.Copy(outFile, reader); err != nil {
+	if _, err = io.Copy(io.MultiWriter(outFile, progress), reader); err != nil {
 		fmt.Println(err)
 	}
 	inFile.Close()
@@ -86,6 +92,11 @@ func Encrypter(path string) (err error) {
 		return errors.New("Need to Initialize Block first. Call: InitializeBlock(myKey []byte)")
 	}
 
+	progress := bar.DefaultBytes(
+		-1,
+		"encrypting",
+	)
+	
 	inFile, err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
@@ -105,7 +116,7 @@ func Encrypter(path string) (err error) {
 	outFile.Write(iv)
 	writer := &cipher.StreamWriter{S: stream, W: outFile}
 
-	if _, err = io.Copy(writer, inFile); err != nil {
+	if _, err = io.Copy(io.MultiWriter(writer, progress), inFile); err != nil {
 		fmt.Println(err.Error())
 	}
 	inFile.Close()

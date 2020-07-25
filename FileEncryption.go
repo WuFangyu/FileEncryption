@@ -87,7 +87,7 @@ func Decrypter(path string, outDir string) (err error) {
 }
 
 // Encrypter encrypts a file given its filepatth
-func Encrypter(path string) (err error) {
+func Encrypter(path string, tmpDir string) (err error) {
 	if block == nil {
 		return errors.New("Need to Initialize Block first. Call: InitializeBlock(myKey []byte)")
 	}
@@ -103,7 +103,7 @@ func Encrypter(path string) (err error) {
 		return
 	}
 
-	obfuscatePath := "/tmp/" +  filepath.Base(path) + Ext
+	obfuscatePath := tmpDir +  filepath.Base(path) + Ext
 	outFile, err := os.OpenFile(obfuscatePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
 	// fmt.Println(outFile.Name())
 
